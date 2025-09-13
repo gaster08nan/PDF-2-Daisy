@@ -15,6 +15,10 @@ This project seamlessly transforms a PDF file into a complete DAISY book. Here's
 
 Getting the project up and running is a breeze. Just follow these simple steps.
 
+## Run in Collab
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1YVubTOLDCbyPZz7tN_1TJTKRfeMFZ2iL?usp=sharing)
+
+
 ### ✅ Prerequisites
 
 Make sure you have Python 3.8 or higher installed on your system.
