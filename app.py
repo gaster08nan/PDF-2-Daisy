@@ -94,8 +94,14 @@ if st.session_state.job_id and not st.session_state.processing_complete:
                 st.session_state.total = data.get("total", 1)
 
                 # Update UI
-                progress_value = st.session_state.progress / st.session_state.total if st.session_state.total > 0 else 0
-                progress_bar.progress(progress_value)
+                progress = st.session_state.progress
+                total = st.session_state.total
+                
+                progress_value = progress / total if total > 0 else 0
+                if progress > 1.0:
+                    progress_value = progress / 100.0
+                
+                progress_bar.progress(min(progress_value, 1.0))
                 status_text.text(f"Status: {st.session_state.status}")
 
                 if "finished" in st.session_state.status.lower():
