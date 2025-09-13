@@ -1,0 +1,46 @@
+torch==2.8.0+cu126
+torchaudio==2.8.0+cu126
+ffmpeg==1.4
+tqdm==4.67.1
+numpy==2.3.2
+anemone-daisy-maker>=1.95
+lxml>=6.0.1
+pip install k2==1.24.4.dev20250807+cuda12.6.torch2.8.0 -f https://k2-fsa.github.io/k2/cuda.html
+pydub==0.25.1
+pyaudio==0.2.14
+tqdm>=4.67.1
+
+# Audio processing
+librosa
+soundfile
+
+# Model
+s3prl
+pyannote.audio
+funasr
+transformers
+safetensors
+tensorboard
+
+# Tokenization
+jieba
+piper_phonemize -f https://k2-fsa.github.io/icefall/piper_phonemize.html
+pypinyin
+setuptools<81
+
+# WER
+jiwer==3.1.0
+
+# Normalization
+zhconv
+zhon
+cn2an
+inflect
+
+lhotse
+vocos
+fastapi
+uvicorn
+streamlit
+requests
+python-multipart
