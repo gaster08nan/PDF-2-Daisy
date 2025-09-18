@@ -103,3 +103,69 @@ def process_pdf(pdf_file):
 
     doc.close()
     return section_list
+
+
+def cut_pdf_by_chapter(pdf_file: str, chapter_title: str, output_pdf: str):
+    """
+    Description: Create a new pdf file from the begining until the input chapter name. Cut off the text after the chapter name by drawing a white rectangle over it.
+    Input:
+        pdf_file: str, the path to the pdf file.
+        chapter_title: str, the chapter name to cut the pdf.
+        output_pdf: str, the path to save the new pdf file.
+    Return:
+        output_pdf: str, the path to the new pdf file.
+    """
+    doc = pymupdf.open(pdf_file)
+    new_doc = pymupdf.open()
+    
+    toc = doc.get_toc()
+
+    # Filter: keep only titles until the given chapter_title
+    filtered_toc = []
+    i = 0
+    while True:
+        idx, title, page = toc[i]
+        filtered_toc.append([idx, title, page])
+        if chapter_title in title:
+            filtered_toc.append(toc[i + 1])
+            break
+        i += 1
+    
+    _, _, page_start = filtered_toc[0]
+    _, last_title, page_end = filtered_toc[-1]
+
+    # Copy relevant pages
+    new_doc.insert_pdf(doc, from_page=page_start, to_page=page_end - 1)
+    last_page = new_doc[-1]  # last page of new doc
+
+    # Extract full text
+    full_text = last_page.get_text("text")
+    new_text = full_text.split(last_title)[0].strip()
+
+    if new_text:  # only mask if something remains above cutoff
+        # Locate the block containing the cutoff title
+        blocks = last_page.get_text("blocks")
+        block_found = None
+        for block in blocks:
+            if last_title in block[4]:  # block[4] is text content
+                block_found = block
+                break
+
+        if block_found:
+            # b = (x0, y0, x1, y1, "text", block_no, block_type, ...)
+            _, y0, _, _, _, _, _ = block_found
+            page_rect = last_page.rect
+            erase_rect = pymupdf.Rect(0, y0, page_rect.width, page_rect.height)
+
+            # Draw white rectangle to mask unwanted text
+            last_page.draw_rect(erase_rect, color=(1, 1, 1), fill=(1, 1, 1))
+
+    # Update TOC (exclude the extra appended one)
+    new_doc.set_toc(filtered_toc[:-1])
+
+    # Save
+    new_doc.save(output_pdf)
+    new_doc.close()
+    doc.close()
+
+    return output_pdf
