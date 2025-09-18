@@ -118,12 +118,13 @@ def cut_pdf_by_chapter(pdf_file: str, chapter_title: str, output_pdf: str):
     doc = pymupdf.open(pdf_file)
     new_doc = pymupdf.open()
     
+    # Extract current bookmarks (outline)
     toc = doc.get_toc()
 
     # Filter: keep only titles until the given chapter_title
     filtered_toc = []
     i = 0
-    while True:
+    while True and  i < len(toc):
         idx, title, page = toc[i]
         filtered_toc.append([idx, title, page])
         if chapter_title in title:
@@ -147,7 +148,7 @@ def cut_pdf_by_chapter(pdf_file: str, chapter_title: str, output_pdf: str):
         blocks = last_page.get_text("blocks")
         block_found = None
         for block in blocks:
-            if last_title in block[4]:  # block[4] is text content
+            if last_title in block[4]:  # b[4] is text content
                 block_found = block
                 break
 
@@ -159,7 +160,9 @@ def cut_pdf_by_chapter(pdf_file: str, chapter_title: str, output_pdf: str):
 
             # Draw white rectangle to mask unwanted text
             last_page.draw_rect(erase_rect, color=(1, 1, 1), fill=(1, 1, 1))
-
+    else:
+        if len(new_doc) <= page_end + 1:
+            new_doc.delete_page(-1)
     # Update TOC (exclude the extra appended one)
     new_doc.set_toc(filtered_toc[:-1])
 
