@@ -1,0 +1,17 @@
+# Ignore data folders, logs, and virtual environments
+logs/
+__pycache__/
+data/
+.venv/
+
+# Redundant files
+.cache
+*.pyc
+*.ipynb
+.git
+*.gitatributes
+.gitignore
+
+# uv files
+uv.lock
+.python-version

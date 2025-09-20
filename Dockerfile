@@ -1,5 +1,17 @@
 # Use a PyTorch runtime with CUDA support as a parent image
-FROM pytorch/pytorch:2.1.0-cuda12.1-cudnn8-runtime
+FROM python:3.12.11-slim
+
+# Update package lists and install PortAudio development libraries
+RUN apt-get update && \
+    apt-get install -y \
+    ffmpeg \
+    libasound-dev \
+    libportaudio2 \
+    libportaudiocpp0 \
+    portaudio19-dev \
+    libsndfile1-dev \
+    && rm -rf /var/lib/apt/lists/* \
+    pip install pyaudio 
 
 # Set the working directory in the container
 WORKDIR /app
@@ -20,8 +32,7 @@ COPY start.sh .
 RUN chmod +x start.sh
 
 # Expose the ports for the backend and the UI
-EXPOSE 4567
-EXPOSE 8501
+EXPOSE 4567 8501
 
 # Define a volume for the output data
 VOLUME /app/data

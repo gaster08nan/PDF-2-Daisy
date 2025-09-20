@@ -2,10 +2,14 @@ ffmpeg==1.4
 tqdm==4.67.1
 numpy==2.3.2
 anemone-daisy-maker>=1.95
+torch==2.8.0+cu126
+torchaudio==2.8.0+cu126
+--extra-index-url https://download.pytorch.org/whl/cu126
+-f https://k2-fsa.github.io/k2/cuda.html
+k2==1.24.4.dev20250807+cuda12.6.torch2.8.0
 lxml>=6.0.1
-pip install k2==1.24.4.dev20240323+cuda12.1.torch2.1.0 -f https://k2-fsa.github.io/k2/cuda.html
 pydub==0.25.1
-pyaudio==0.2.14
+pymupdf
 tqdm>=4.67.1
 
 # Audio processing
@@ -22,7 +26,8 @@ tensorboard
 
 # Tokenization
 jieba
-piper_phonemize -f https://k2-fsa.github.io/icefall/piper_phonemize.html
+-f https://k2-fsa.github.io/icefall/piper_phonemize.html
+piper_phonemize 
 pypinyin
 setuptools<81
 
