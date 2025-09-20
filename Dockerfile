@@ -1,10 +1,19 @@
 # Use a PyTorch runtime with CUDA support as a parent image
 FROM python:3.12.11-slim
 
+# Add metadata labels
+LABEL Author="HDThang"
+LABEL version="0.1.0"
+LABEL description="Python application for converting PDFs to DAISY format"
+
 # Update package lists and install PortAudio development libraries
-RUN apt-get update && \
-    apt-get install -y \
+
+RUN pip install lxml
+     
+RUN apt-get update \
+    && apt-get install -y \
     ffmpeg \
+    lame \
     libasound-dev \
     libportaudio2 \
     libportaudiocpp0 \
@@ -20,7 +29,9 @@ WORKDIR /app
 COPY requirements.docker.txt .
 
 # Install any needed packages specified in requirements.docker.txt
-RUN pip install --no-cache-dir -r requirements.docker.txt
+# RUN pip install --no-cache-dir -r requirements.docker.txt
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --no-cache-dir -r requirements.docker.txt
 
 # Copy the project files into the container
 COPY src/ ./src/

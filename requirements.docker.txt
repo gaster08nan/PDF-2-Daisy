@@ -7,7 +7,7 @@ torchaudio==2.8.0+cu126
 --extra-index-url https://download.pytorch.org/whl/cu126
 -f https://k2-fsa.github.io/k2/cuda.html
 k2==1.24.4.dev20250807+cuda12.6.torch2.8.0
-lxml>=6.0.1
+# lxml>=6.0.1
 pydub==0.25.1
 pymupdf
 tqdm>=4.67.1
